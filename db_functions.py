@@ -274,7 +274,32 @@ def start_sending_hello_db(tokens: list, db_name: str = 'db/db.db', table: str =
     print(users[user_index])
 
 
+def migration_accounts_to_db(accounts: list = list_accounts, db_name: str = 'db/database.db', table: str = 'accounts'):
+    """
+    Функция, которая заносит аккаунты из списка в базу данных.
+    :param accounts: Список с информацией об аккаунтах.
+    :type accounts: List.
+    :param db_name: Путь к файлу с базой данных и его название. Нужно, чтоб все папки, указанные в пути были созданы.
+    :type db_name: Str.
+    :param table: Название таблицы.
+    :type table: Str.
+    """
+    e_count = 0
+    for account in accounts:
+        try:
+            sqlite_add_new_account(login=account['login'],
+                                   password=account['password'],
+                                   account_id=account['id'],
+                                   api=account['api'],
+                                   pts=account['pts'],
+                                   creation_date=account['creation_date'],
+                                   messages_sended=account['messages_sended'],
+                                   orders_friends=account['orders_friends'],
+                                   ban=account['ban'],
+                                   db_name=db_name,
+                                   table=table)
+        except:
+            e_count += 1
+    print('Успешно занесённых в базу аккаунтов - ' + str(len(accounts) - e_count))
+    print('Не удалось занести - ' + str(e_count))
 
-
-
-# change_all_ts_from_db()
